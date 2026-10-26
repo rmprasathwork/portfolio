@@ -34,6 +34,11 @@ h2{font-size:1.9rem;margin-bottom:28px}
 .layer:nth-child(2){background:var(--l2);margin:0 24px}
 .layer:nth-child(3){background:var(--l3);margin:0 12px}
 .layer:nth-child(4){background:var(--l4);color:var(--l4ink)}
+.stack{transition:gap .35s ease}
+.layer{transition:transform .35s ease,box-shadow .35s ease}
+.stack:hover{gap:16px}
+.layer:hover{transform:translateX(8px) translateY(-2px);box-shadow:0 10px 24px rgba(10,30,80,.18)}
+@media (prefers-reduced-motion:reduce){.stack,.layer{transition:none}.stack:hover{gap:6px}.layer:hover{transform:none}}
 .cap{font-size:.85rem;color:var(--muted);margin-top:14px;text-align:center}
 .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .facts div{padding:20px;border-right:1px solid var(--line)}
@@ -67,10 +72,41 @@ footer h2{margin-bottom:12px}
 .facts div:nth-child(-n+2){border-bottom:1px solid var(--line)}
 .stack{transform:none}
 }
+
+.layer:nth-child(2){margin:0 18px}
+.layer:nth-child(3){background:var(--l4);color:var(--l4ink);margin:0}
+.stack{transform:perspective(900px) rotateX(calc(8deg + var(--rx,0deg))) rotateY(var(--ry,0deg));transition:gap .35s ease,transform .25s ease-out}
+html{scroll-behavior:smooth}
+.bar{position:fixed;top:0;left:0;height:3px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:var(--accent);z-index:30}
+.nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:56px}
+.brand{font:700 1.2rem "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink);border:2px solid var(--ink);border-radius:6px;padding:0 8px}
+.links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.links a{color:var(--muted);text-decoration:none;font-size:.93rem;padding:6px 12px;border-radius:999px;white-space:nowrap;transition:background .2s,color .2s}
+.links a.on{background:var(--ink);color:var(--bg)}
+.hero{position:relative}
+.hero::before{content:"";position:absolute;inset:-40px -10% auto auto;width:420px;height:420px;background:radial-gradient(circle,var(--l3),transparent 65%);opacity:.45;filter:blur(30px);z-index:-1;animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(-60px,50px) scale(1.15)}}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+.card,.facts div,.tags li,.certs li,.job,.btn{transition:transform .25s ease,box-shadow .25s ease,border-color .25s,background .25s,color .25s}
+@media (hover:hover){
+.card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 14px 30px rgba(10,30,80,.14)}
+.facts div:hover{background:var(--l1)}
+.tags li:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);transform:translateY(-2px)}
+.certs li:hover{transform:translateX(8px);border-color:var(--accent)}
+.job:hover h3{color:var(--accent)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(10,30,80,.2)}
+.links a:not(.on):hover{background:var(--l1);color:var(--ink)}
+}
+@media (max-width:760px){.brand{display:none}.links{width:100%}.hero::before{width:260px;height:260px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.hero::before{animation:none}.stack{transform:none!important}.card:hover,.btn:hover,.certs li:hover,.tags li:hover{transform:none}}
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="bar" id="bar"></div>
+<nav class="nav" aria-label="Sections"><div class="wrap nav-in"><a class="brand" href="#top">RR</a><div class="links"><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#certifications">Certifications</a><a href="#highlights">Awards</a><a href="#contact">Contact</a></div></div></nav>
+<main class="wrap" id="top">
 <header class="hero">
 <div>
 <h1>Ramprasath Ramadoss</h1>
@@ -82,13 +118,12 @@ footer h2{margin-bottom:12px}
 </div>
 </div>
 <div>
-<div class="stack" role="img" aria-label="OutSystems 4-Layer Canvas: End-User, Core, Foundation, Library">
-<div class="layer"><b>End-User</b><span>Screens and flows</span></div>
-<div class="layer"><b>Core</b><span>Business logic</span></div>
-<div class="layer"><b>Foundation</b><span>Integrations and data</span></div>
-<div class="layer"><b>Library</b><span>Reusable components</span></div>
+<div class="stack" role="img" aria-label="OutSystems 3-Layer Canvas: End-User, Core, Foundation">
+<div class="layer"><b>End-User</b><span>Screens and app-specific UI</span></div>
+<div class="layer"><b>Core</b><span>Business entities and services</span></div>
+<div class="layer"><b>Foundation</b><span>Integrations, NFR, themes and libraries</span></div>
 </div>
-<p class="cap">The O11 4-Layer Canvas I use to structure modules</p>
+<p class="cap">The 3-Layer Canvas I use to structure modules</p>
 </div>
 </header>
 
@@ -110,7 +145,7 @@ footer h2{margin-bottom:12px}
 <ul>
 <li>Lead a 5-member team through code reviews, mentoring, task allocation, and delivery support.</li>
 <li>Lead complex feature design across O11 and ODC, improving development efficiency by about 30% with reusable solutions.</li>
-<li>Own module architecture on the 4-Layer Canvas and plan the phased O11 to ODC migration for select banking modules.</li>
+<li>Own module architecture on the 3-Layer Canvas and plan the phased O11 to ODC migration for select banking modules.</li>
 <li>Integrate 200+ REST and SOAP APIs secured with OAuth, JWT, and API keys.</li>
 <li>Implement financial rules, workflows, and validations, using BPT for automated business logic.</li>
 <li>Build authentication, authorization, and RBAC patterns for compliant banking workflows.</li>
@@ -173,7 +208,7 @@ footer h2{margin-bottom:12px}
 <section id="skills">
 <h2>Skills</h2>
 <div class="grid2">
-<div class="card"><h3>OutSystems</h3><ul class="tags"><li>OutSystems 11</li><li>ODC</li><li>Service Studio</li><li>ODC Studio</li><li>Integration Studio</li><li>Service Center</li><li>Architecture Dashboard</li><li>4-Layer Canvas</li><li>BPT</li></ul></div>
+<div class="card"><h3>OutSystems</h3><ul class="tags"><li>OutSystems 11</li><li>ODC</li><li>Service Studio</li><li>ODC Studio</li><li>Integration Studio</li><li>Service Center</li><li>Architecture Dashboard</li><li>3-Layer Canvas</li><li>BPT</li></ul></div>
 <div class="card"><h3>Integration and data</h3><ul class="tags"><li>REST</li><li>SOAP</li><li>OAuth</li><li>JWT</li><li>API keys</li><li>SQL</li><li>Advanced SQL</li><li>MySQL</li><li>Postman</li></ul></div>
 <div class="card"><h3>Security</h3><ul class="tags"><li>Authentication</li><li>Authorization</li><li>RBAC</li><li>API security</li></ul></div>
 <div class="card"><h3>Frontend</h3><ul class="tags"><li>Reactive Web</li><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></div>
@@ -216,7 +251,7 @@ footer h2{margin-bottom:12px}
 </section>
 </main>
 
-<footer>
+<footer id="contact">
 <div class="wrap">
 <h2>Let’s talk</h2>
 <p>Based in Chennai, India. Open to conversations about OutSystems and ODC work.</p>
@@ -226,5 +261,26 @@ footer h2{margin-bottom:12px}
 </div>
 </div>
 </footer>
+<script>
+(function(){
+var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var bar=document.getElementById('bar');
+function prog(){var h=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(h>0?Math.min(scrollY/h,1):0)+')'}
+addEventListener('scroll',prog,{passive:true});prog();
+if(!rm&&'IntersectionObserver' in window){
+document.querySelectorAll('section h2,.facts,.job,.card,.certs,.award,footer .wrap').forEach(function(el,i){el.classList.add('rv');el.style.setProperty('--d',(el.matches('.card')?(i%2)*90:0)+'ms')});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+var st=document.querySelector('.stack');
+if(st&&matchMedia('(hover:hover)').matches){
+st.parentElement.addEventListener('pointermove',function(e){var r=st.getBoundingClientRect();st.style.setProperty('--ry',(((e.clientX-r.left)/r.width-.5)*14)+'deg');st.style.setProperty('--rx',(-((e.clientY-r.top)/r.height-.5)*8)+'deg')});
+st.parentElement.addEventListener('pointerleave',function(){st.style.setProperty('--ry','0deg');st.style.setProperty('--rx','0deg')})}
+}
+var links=[].slice.call(document.querySelectorAll('.links a'));
+var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+function act(){var y=scrollY+120,cur=-1;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});links.forEach(function(a,i){a.classList.toggle('on',i===cur)})}
+addEventListener('scroll',act,{passive:true});act();
+})();
+</script>
 </body>
 </html>
